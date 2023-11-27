@@ -1,73 +1,46 @@
 import java.io.File;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
-
-public class partyTester
+/**
+* Tester.java
+* @author Isabella Wang
+* @since 11/27/2023
+* This class contains main and calls methods of planner, which is a Party object
+*/
+public class Tester
 {
-	public static void main (String[] args)
+	public static void main(String[] args) //counts the stuff AFTER the class name
 	{
-		String[] test;
-		
-		if (args.length != 3)//not enough arguments
+	
+		if (args.length != 2) 
 		{
+			System.out.println("Incorrect Number of Arguments");
 			return;
 		}
 		
-		Scanner checker;
+		File preGuests = new File(args[0]);
+		File compList = new File(args[1]);
 		
-		try //this entire try catch is to test if files can be opened and at least have right number of columns
+		if (!preGuests.exists() || !compList.exists())
 		{
-			File guests = new File(args[1]);
-			File companies = new File(args[2]);
-			
-			checker = new Scanner(guests);
-			if (!checker.hasNextLine())//got an empty file
-			{
-				checker.close();
-				return;
-			}
-			else
-			{
-				test = checker.nextLine().split(",");
-				if (test.size != 4) //impropery formated guest list
-				{
-					checker.close();
-					return;
-				}
-			}
-			checker.close();
-			
-			checker = new Scanner(companies);
-			if (!checker.hasNextLine())//got an empty file
-			{
-				checker.close();
-				return;
-			}
-			else
-			{
-				test = checker.nextLine().split(",");
-				if (test.size != 2) //impropery formated guest list
-				{
-					checker.close();
-					return;
-				}
-				checker.close();
-			}
-		}
-		catch (FileNotFoundException e)
-		{
+			System.out.println("File not found.");
 			return;
-		} //end of try-catch for opening files
-		
-		Party createParty = new Party(File guests, File companies);
-		
-		while (!createParty.atMax())
-		{
-			createParty.addGuest();
 		}
 		
-		createParty.assignGuests();
-		createParty.printCompRoster();
-		createParty.printSeatChart();
+		//this section is to get inputs to avoid magiNum
+		int tableCt;
+		
+		Party planner = new Party();
+		if (!planner.loadComps(compList) || !planner.loadGuests(preGuests)) //comps  must be loaded before guests
+			return;
+		System.out.println("Add remaining guests: \n");
+		planner.addGuests();
+		planner.assignSeats();
+		planner.printCompanies();
+		planner.printTables();
+		
+		System.out.println("Find guest's seat: \n");
+		planner.findPerson();
+		
+		planner.inputter.close(); //close scanner since i can't have multiple so made this public static scanner
 	}
 }
