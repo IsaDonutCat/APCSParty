@@ -1,34 +1,51 @@
+/**
+* Guest.java
+* @author Isabella Wang
+* @since 11/27/2023
+* This class mainly works as a data struct
+*/
+
 public class Guest
 {
-	//construct with firstname, lastname, company, tablenum - CHECK
-	//getters for everything  - CHECK (at least partially)
-	String lastName, firstName, compName;
-	int tableNum;
+	String fullName, compName;
+	int seatNum = 0;
+	int tableNum = 0;
 	
-	public Guest(String inLast, String inFirst, String inComp)
+	public Guest(String inName, String inComp) //constructor
 	{
-		lastName = inLast;
-		firstName = inFirst;
+		fullName = inName;
 		compName = inComp;
 	}
 	
-	public void setTable(int assigned)
+	public String getComp()
 	{
-		tableNum = assigned;
+		//.out.println("getting Comp = " + compName);
+		return compName;
 	}
 	
-	public int getTable()
+	public String getName() 
 	{
-		return tableNum;
+		return fullName;
 	}
 	
-	public int getComp()
+	public void giveSeat(int inTable, int inSeat)
 	{
-		return compId;
+		tableNum = inTable;
+		seatNum = inSeat;
 	}
 	
-	public String getName()
+	public String toString()
 	{
-		return firstName + lastName;
+		return compName;
+	}
+	
+	public void printTable()//when printing by table
+	{
+		System.out.println(compName + " | " + fullName + ", Seat " + seatNum);
+	}
+	
+	public void printComp() //when printing by company
+	{
+		System.out.println(fullName + " | Table " + tableNum + ", Seat " + seatNum);
 	}
 }
